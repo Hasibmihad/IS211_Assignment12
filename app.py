@@ -85,18 +85,44 @@ def add_quiz():
     return render_template('add_quiz.html')
 
 
-@app.route('/student/<int:student_id>')
+@app.route('/student/<student_id>')
 def student_result(student_id):
      with sqlite3.connect("hw12.db") as con:
             cur = con.cursor()
-            cur.execute("SELECT * FROM Results WHERE student_id=?",(student_id) )
+            cur.execute("SELECT * FROM Results WHERE student_id=?",(int(student_id),) )
             results= cur.fetchall()
-            if results is None:
+            print(results)
+            if not results:
                 return 'No Result !!!'
             else :
                 return render_template('student_results.html', results=results)
     
 
+@app.route('/results/add', methods=['GET', 'POST'])
+def add_quiz_result():
+    if request.method == 'POST':
+        student_id = int(request.form['student_id'])
+        quiz_id = int(request.form['quiz_id'])
+        score = int(request.form['score'])
+
+        with sqlite3.connect("hw12.db") as con:
+            cur = con.cursor()
+            cur.execute("INSERT INTO Results (quiz_id,student_id,score) VALUES (?,?,?)",(quiz_id,student_id,score) )
+
+        return redirect(url_for('dashboard'))
+
+    con = sqlite3.connect("hw12.db")
+    con.row_factory = sqlite3.Row
+   
+    cur = con.cursor()
+    cur.execute("select * from Students")
+    students_data = cur.fetchall(); 
+
+
+    cur = con.cursor()
+    cur.execute("select * from Quizzes")
+    quizzes_data= cur.fetchall(); 
+    return render_template('add_result.html', students=students_data, quizzes=quizzes_data, error=None)
 
 
 
