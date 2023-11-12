@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Quiz</title>
+</head>
+<body>
+  <h2>Add Quiz</h2>
+  <form action="/quiz/add" method="POST">
+    <label for="subject">Quiz Subject:</label>
+    <input type="text" id="subject" name="subject" required>
+
+    <label for="noq">Number of Questions:</label>
+    <input type="text" id="noq" name="noq" required>
+
+
+    <label for="quiz-date">Quiz Date:</label>
+    <input type="date" id="quiz-date" name="quiz_date" required>
+
+
+    <button type="submit">Add Quiz</button>
+  </form>
+  <br>
+  <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>
