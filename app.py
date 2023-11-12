@@ -87,15 +87,16 @@ def add_quiz():
 
 @app.route('/student/<student_id>')
 def student_result(student_id):
-     with sqlite3.connect("hw12.db") as con:
+     if 'username' in session:
+        with sqlite3.connect("hw12.db") as con:
             cur = con.cursor()
             cur.execute("SELECT * FROM Results WHERE student_id=?",(int(student_id),) )
-            results= cur.fetchall()
-            print(results)
-            if not results:
+            resultss= cur.fetchall()
+            print(resultss)
+            if not resultss:
                 return 'No Result !!!'
             else :
-                return render_template('student_results.html', results=results)
+                return render_template('student_results.html', results=resultss)
     
 
 @app.route('/results/add', methods=['GET', 'POST'])
